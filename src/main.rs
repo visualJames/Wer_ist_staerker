@@ -102,6 +102,7 @@ diese Einheit als Karte zu finden ist
 */
 #[derive(Debug)]
 struct Einheit {
+    einheitsbezeichnung: String, //Die Bezeichnung der Einheit
     hp: i32, //logisch soll nur 1-255 HP möglich sein
     damage: i32, //logisch soll nur 0-255 Damage/Heilung möglich sein
     verteidigung: i32, //logisch soll nur 0-255 Verteidigung möglich sein
@@ -121,10 +122,11 @@ impl Einheit {
         hierbenötigte Aufgabe einen gewöhnlichen
         Ork-Krieger erstellt
     */
-    fn gemeiner_Ork(hp: i32, damage: i32,
-    verteidigung: i32) -> Einheit{
+    fn gemeiner_Ork(einheitsbezeichnung: String,
+        hp: i32, damage: i32,verteidigung: i32)
+         -> Einheit{
         Einheit {
-            hp, damage, verteidigung, //übergebene Werte
+            einheitsbezeichnung, hp, damage, verteidigung, //übergebene Werte
             rasse: Rasse::Orks,
             klasse: Klasse::Nah,
             held: false,
@@ -137,10 +139,12 @@ impl Einheit {
         hierbenötigte Aufgabe einen gewöhnlichen
         Menschen-Banditen erstellt
     */
-    fn gemeiner_Bandit(hp: i32, damage: i32,
-    verteidigung: i32) -> Einheit{
+    fn gemeiner_Bandit(einheitsbezeichnung: String,
+        hp: i32, damage: i32,verteidigung: i32)
+         -> Einheit{
         Einheit {
-            hp, damage, verteidigung, //übergebene Werte
+            einheitsbezeichnung, hp, damage,
+            verteidigung, //übergebene Werte
             rasse: Rasse::Menschen,
             klasse: Klasse::Nah,
             held: false,
@@ -173,9 +177,25 @@ impl Einheit {
         let mut error = false;
         match schaden {
             0 => println!("kein Schaden angerichtet"),
-            1..=255 => gegner.hp -= schaden,
-            -255..=-1 => self.hp += schaden,
-            _ => error=true,
+            1..=255 => {
+                gegner.hp -= schaden;
+                println!("Der gegnerischen Einheit {}
+                wurde {} viel Schaden zugefügt!",
+                gegner.einheitsbezeichnung, schaden);
+            },
+            -255..=-1 => {
+                self.hp += schaden;
+                println!("Deine Einheit ist zu swach!!!\n
+                Du erleidest im Kampf gegen {} {} viel Schaden.",
+                gegner.einheitsbezeichnung, -schaden);
+            },
+            _ => {
+                error=true;
+                println!("Illegale Anzahl an Schaden ist
+                         ermittelt worden: {}",schaden);
+                println!("Deine Einheit: {:?}",self);
+                println!("Gegnerische Einheit: {:?}",gegner);
+            },
         }
         error
     }
