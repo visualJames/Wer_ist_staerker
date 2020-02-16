@@ -47,8 +47,8 @@ enum Rasse {
 
 /*
 Es gibt zwei Felder (Schlachtfelder),
-um darauf zu kämpfen.
 Nah können im Feld 1 oder 2 platziert werden.
+um darauf zu kämpfen.
 Fern, Magier und Heiler sind zwischen den
 beiden Feldern zu finden.
 
@@ -76,13 +76,13 @@ enum Klasse {
 
 #[derive(Debug)]
 enum Haeufigkeit {  // ^
-    legendaer,      // |
-    episch,         // |
-    sehr_selten,    // ^
-    selten,         // | seltener
-    leicht_selten,  // |
-    haeufig,        // |
-    sehr_haeufig,   // |
+    Legendaer,      // |
+    Episch,         // |
+    SehrSelten,    // ^
+    Selten,         // | seltener
+    LeichtSelten,  // |
+    Haeufig,        // |
+    SehrHaeufig,   // |
 }
 
 /*
@@ -122,7 +122,7 @@ impl Einheit {
         hierbenötigte Aufgabe einen gewöhnlichen
         Ork-Krieger erstellt
     */
-    fn gemeiner_Ork(einheitsbezeichnung: String,
+    fn gemeiner_ork(einheitsbezeichnung: String,
         hp: i32, damage: i32,verteidigung: i32)
          -> Einheit{
         Einheit {
@@ -130,7 +130,7 @@ impl Einheit {
             rasse: Rasse::Orks,
             klasse: Klasse::Nah,
             held: false,
-            haeufigkeit: Haeufigkeit::selten //Ja, richtige Orks sind selten
+            haeufigkeit: Haeufigkeit::Selten //Ja, richtige Orks sind selten
         }
     }
 
@@ -139,7 +139,7 @@ impl Einheit {
         hierbenötigte Aufgabe einen gewöhnlichen
         Menschen-Banditen erstellt
     */
-    fn gemeiner_Bandit(einheitsbezeichnung: String,
+    fn gemeiner_bandit(einheitsbezeichnung: String,
         hp: i32, damage: i32,verteidigung: i32)
          -> Einheit{
         Einheit {
@@ -148,7 +148,7 @@ impl Einheit {
             rasse: Rasse::Menschen,
             klasse: Klasse::Nah,
             held: false,
-            haeufigkeit: Haeufigkeit::sehr_haeufig //leider sind Banditen die Pest
+            haeufigkeit: Haeufigkeit::Haeufig //leider sind Banditen die Pest
         }
     }
 
@@ -165,7 +165,7 @@ impl Einheit {
             rasse: Rasse::Elfen,
             klasse: Klasse::Fern,
             held: false,
-            haeufigkeit: Haeufigkeit::leicht_selten, //Elfen waren früher nur
+            haeufigkeit: Haeufigkeit::LeichtSelten, //Elfen waren früher nur
                                               //Legenden,jetzt entschwinden sie
                                               //immer mehr den Ruf der Fabelwesen
         }
@@ -182,7 +182,7 @@ impl Einheit {
         let ork_damage = 20;
         let ork_verteidigung = 15;
         println!("Erzeuge Ork: {}", ork_name);
-        let mut ork = Einheit::gemeiner_Ork(ork_name,
+        let ork = Einheit::gemeiner_ork(ork_name,
             ork_hp, ork_damage, ork_verteidigung);
         println!("Ork mit folgenden Werten erzeugt:\n
         {:?}", ork);
@@ -196,7 +196,7 @@ impl Einheit {
         let mensch_damage = 16;
         let mensch_verteidigung = 10;
         println!("Erzeuge Mensch: {}", mensch_name);
-        let mut mensch = Einheit::gemeiner_Bandit(mensch_name,
+        let mensch = Einheit::gemeiner_bandit(mensch_name,
             mensch_hp, mensch_damage, mensch_verteidigung);
         println!("Bandit mit folgenden Werten erzeugt:\n
         {:?}", mensch);
@@ -210,7 +210,7 @@ impl Einheit {
         let elfen_damage = 18;
         let elfen_veteidigung = 15;
         println!("Erzeuge Elf: {}", elfen_name);
-        let mut elf = Einheit::elf_bogenschuetze(elfen_name,
+        let elf = Einheit::elf_bogenschuetze(elfen_name,
              elfen_hp,elfen_damage, elfen_veteidigung);
         println!("Elf mit folgenden Werten erzeugt:\n
              {:?}", elf);
@@ -323,13 +323,13 @@ fn test_kampf_elf_vs_ork() {
 }
 
 fn check_kampf(error: bool, ork: &Einheit, mensch: &Einheit) -> bool{
-    if(error||ork.hp <1||mensch.hp <1){
-        if(error){
+    if error||ork.hp <1||mensch.hp <1 {
+        if error {
             println!("Fehler!");
-        } else if(ork.hp<1){
+        } else if ork.hp<1 {
             println!("Die Einheit: {} hat gegen {} gewonnen",
              mensch.einheitsbezeichnung, ork.einheitsbezeichnung);
-        } else if(mensch.hp<1){
+        } else if mensch.hp<1 {
             println!("Die Einheit: {} hat gegen {} gewonnen",
              ork.einheitsbezeichnung,mensch.einheitsbezeichnung);
         }
