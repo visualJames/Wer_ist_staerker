@@ -173,6 +173,8 @@ impl Einheit {
         sein sollten)
     */
     fn angriff(&mut self, gegner: &mut Einheit) -> bool {
+        println!("{} greift mutig {} an",
+        self.einheitsbezeichnung, gegner.einheitsbezeichnung);
         let schaden = self.damage - gegner.verteidigung;
         let mut error = false;
         match schaden {
@@ -182,12 +184,14 @@ impl Einheit {
                 println!("Der gegnerischen Einheit {}
                 wurde {} viel Schaden zugefügt!",
                 gegner.einheitsbezeichnung, schaden);
+                println!("-->{} Leben {}",gegner.einheitsbezeichnung, gegner.hp);
             },
             -255..=-1 => {
                 self.hp += schaden;
                 println!("Deine Einheit ist zu swach!!!\n
                 Du erleidest im Kampf gegen {} {} viel Schaden.",
                 gegner.einheitsbezeichnung, -schaden);
+                println!("-->{} Leben {}",self.einheitsbezeichnung, self.hp);
             },
             _ => {
                 error=true;
@@ -202,5 +206,72 @@ impl Einheit {
 }
 
 fn main() {
-    println!("Hello, world!");
+    test_kampf();
+}
+
+fn test_kampf() {
+    println!("Erzeuge Ork");
+    let ork_name = String::from("Blutschlinger-Ork");
+    let ork_hp = 50;
+    let ork_damage = 20;
+    let ork_verteidigung = 15;
+    let mut ork = Einheit::gemeiner_Ork(ork_name,
+        ork_hp, ork_damage, ork_verteidigung);
+    println!("Ork mit folgenden Werten erzeugt:\n
+    {:?}", ork);
+
+
+    println!("Erzeuge Mensch");
+    let mensch_name = String::from("Rudolf die Silberklinge");
+    let mensch_hp = 40;
+    let mensch_damage = 16;
+    let mensch_verteidigung = 10;
+    let mut mensch = Einheit::gemeiner_Bandit(mensch_name,
+        mensch_hp, mensch_damage, mensch_verteidigung);
+    println!("Bandit mit folgenden Werten erzeugt:\n
+    {:?}", mensch);
+
+    println!("\n----Starte Kampf----\n");
+    kampf(&mut ork,&mut mensch);
+    println!("\n-----Ende Kampf-----\n");
+}
+
+fn check_kampf(error: bool, ork: &Einheit, mensch: &Einheit) -> bool{
+    if(error||ork.hp <1||mensch.hp <1){
+        if(error){
+            println!("Fehler!");
+        } else if(ork.hp<1){
+            println!("Die Einheit: {} hat gegen {} gewonnen",
+             mensch.einheitsbezeichnung, ork.einheitsbezeichnung);
+        } else if(mensch.hp<1){
+            println!("Die Einheit: {} hat gegen {} gewonnen",
+             ork.einheitsbezeichnung,mensch.einheitsbezeichnung);
+        }
+        return true; //Spiel wird beendet
+    }
+    return false; //Spiel läuft weiter
+}
+
+//Kampf bis zum Tode
+fn kampf (ork: &mut Einheit, mensch: &mut Einheit){
+    //kämpfe solange bis einer stirbt
+    loop {
+        let error = ork.angriff(mensch);
+        match check_kampf(error, ork, mensch) {
+            false => println!("Beide stehen noch immer wacker"),
+            true => {
+                println!("Kampf vorbei");
+                break;
+            },
+        }
+        let error = mensch.angriff(ork);
+        match check_kampf(error, ork, mensch) {
+            false => println!("Beide stehen noch immer wacker"),
+            true => {
+                println!("Kampf vorbei");
+                break;
+            },
+        }
+    }
+    println!("Der Sieger stolziert anmutig vom Schlachfeld");
 }
