@@ -17,12 +17,12 @@ hinzu beim Angriff oder der Verteidigung,
 wenn die Einheit effektiv gegen die
 andere Einheit ist.
 Es gibt vier Rassen:
-Orks, Menschen, Drachen, Elf
+Orks, Menschen, Drachen, Elfen
 
 Orks -effektiv_gegen-> Menschen
-Menschen -effektiv_gegen-> Drachen
-Drachen -effektiv_gegen-> Elfen
-Elfen -effektiv_gegen-> Orks
+-effektiv_gegen-> Drachen
+-effektiv_gegen-> Elfen
+-effektiv_gegen-> Orks
 
 
 Dies soll die Grundlage für ein größeres
