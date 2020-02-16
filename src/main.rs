@@ -152,7 +152,72 @@ impl Einheit {
         }
     }
 
+    /*
+        Dies ist ein Konstruktor, welche für
+        die Erstellung eines seltenen Elfes ist
+    */
+    fn elf_bogenschuetze(einheitsbezeichnung: String,
+        hp: i32, damage: i32,verteidigung: i32)
+         -> Einheit{
+        Einheit {
+            einheitsbezeichnung, hp, damage,
+            verteidigung, //übergebene Werte
+            rasse: Rasse::Elfen,
+            klasse: Klasse::Fern,
+            held: false,
+            haeufigkeit: Haeufigkeit::leicht_selten, //Elfen waren früher nur
+                                              //Legenden,jetzt entschwinden sie
+                                              //immer mehr den Ruf der Fabelwesen
+        }
+    }
+
 }
+
+//___________________________
+//Verschiedene Einheiten
+    //Orks
+    fn erstelle_blutschlinger_ork() -> Einheit {
+        let ork_name = String::from("Blutschlinger-Ork");
+        let ork_hp = 50;
+        let ork_damage = 20;
+        let ork_verteidigung = 15;
+        println!("Erzeuge Ork: {}", ork_name);
+        let mut ork = Einheit::gemeiner_Ork(ork_name,
+            ork_hp, ork_damage, ork_verteidigung);
+        println!("Ork mit folgenden Werten erzeugt:\n
+        {:?}", ork);
+        ork
+    }
+
+    //Menschen
+    fn erstelle_rudolf_die_silberklinge() -> Einheit {
+        let mensch_name = String::from("Rudolf die Silberklinge");
+        let mensch_hp = 40;
+        let mensch_damage = 16;
+        let mensch_verteidigung = 10;
+        println!("Erzeuge Mensch: {}", mensch_name);
+        let mut mensch = Einheit::gemeiner_Bandit(mensch_name,
+            mensch_hp, mensch_damage, mensch_verteidigung);
+        println!("Bandit mit folgenden Werten erzeugt:\n
+        {:?}", mensch);
+        mensch
+    }
+
+    //Elfen
+    fn erstelle_darion_der_geschickte() -> Einheit {
+        let elfen_name = String::from("Darion der Geschickte");
+        let elfen_hp = 20;
+        let elfen_damage = 18;
+        let elfen_veteidigung = 15;
+        println!("Erzeuge Elf: {}", elfen_name);
+        let mut elf = Einheit::elf_bogenschuetze(elfen_name,
+             elfen_hp,elfen_damage, elfen_veteidigung);
+        println!("Elf mit folgenden Werten erzeugt:\n
+             {:?}", elf);
+             elf
+    }
+
+//___________________________
 
 /*
 hier bitte ersmal alle Methoden
@@ -206,33 +271,54 @@ impl Einheit {
 }
 
 fn main() {
-    test_kampf();
+    test_kaempfe();
 }
 
-fn test_kampf() {
-    println!("Erzeuge Ork");
-    let ork_name = String::from("Blutschlinger-Ork");
-    let ork_hp = 50;
-    let ork_damage = 20;
-    let ork_verteidigung = 15;
-    let mut ork = Einheit::gemeiner_Ork(ork_name,
-        ork_hp, ork_damage, ork_verteidigung);
-    println!("Ork mit folgenden Werten erzeugt:\n
-    {:?}", ork);
+fn test_kaempfe(){
+    println!("Erstes Szenario\n");
+    test_kampf_getrennt();
 
+    println!("\nZweitest Szenario\n");
+    test_kampf_gemeinsam();
+}
 
-    println!("Erzeuge Mensch");
-    let mensch_name = String::from("Rudolf die Silberklinge");
-    let mensch_hp = 40;
-    let mensch_damage = 16;
-    let mensch_verteidigung = 10;
-    let mut mensch = Einheit::gemeiner_Bandit(mensch_name,
-        mensch_hp, mensch_damage, mensch_verteidigung);
-    println!("Bandit mit folgenden Werten erzeugt:\n
-    {:?}", mensch);
+fn test_kampf_getrennt(){
+    test_kampf_mensch_vs_ork();
+    println!("\nAm nächsten Tag trifft der Ork auf einen Elfen...\n");
+    test_kampf_elf_vs_ork();
+}
+
+fn test_kampf_gemeinsam(){
+    let mut ork = erstelle_blutschlinger_ork();
+    let mut mensch = erstelle_rudolf_die_silberklinge();
 
     println!("\n----Starte Kampf----\n");
     kampf(&mut ork,&mut mensch);
+    println!("\n-----Ende Kampf-----\n");
+
+    println!("Oh, Nein!!! Ein Elf taucht auf...");
+    let mut elf = erstelle_darion_der_geschickte();
+
+    println!("\n----Starte Kampf----\n");
+    kampf(&mut ork,&mut elf);
+    println!("\n-----Ende Kampf-----\n");
+}
+
+fn test_kampf_mensch_vs_ork() {
+    let mut ork = erstelle_blutschlinger_ork();
+    let mut mensch = erstelle_rudolf_die_silberklinge();
+
+    println!("\n----Starte Kampf----\n");
+    kampf(&mut ork,&mut mensch);
+    println!("\n-----Ende Kampf-----\n");
+}
+
+fn test_kampf_elf_vs_ork() {
+    let mut ork = erstelle_blutschlinger_ork();
+    let mut elf = erstelle_darion_der_geschickte();
+
+    println!("\n----Starte Kampf----\n");
+    kampf(&mut ork,&mut elf);
     println!("\n-----Ende Kampf-----\n");
 }
 
