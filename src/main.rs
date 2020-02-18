@@ -15,6 +15,9 @@ In der Erweiterung kommt noch ein Bonus
 hinzu beim Angriff oder der Verteidigung,
 wenn die Einheit effektiv gegen die
 andere Einheit ist.
+Außerdem wenn die Einheit effektiv gegen die
+andere ist, ist hat sie keine Verteidigung
+und der Damage geht komplett auf die HP.
 Es gibt vier Rassen:
 Orks, Menschen, Drachen, Elf
 
@@ -118,19 +121,131 @@ In diesem Block nur Konstruktoren für Einheiten
 */
 impl Einheit {
     /*
+        Diese Klassenfunktion soll zurückgegeben,
+        wie viel die Rasse mit dieser Klasse an Verteidigung
+        haben soll. Verteidigung ist eine Art Rüstungswert.
+    */
+    fn verteidigung_berechnen(rasse: &Rasse, klasse: &Klasse,
+        haeufigkeit: &Haeufigkeit) -> i32{
+        match rasse {
+            Rasse::Orks => { //Orks tragen zwar große Waffen,
+                match klasse { //aber vor allem leichte Rüstungen
+                    Klasse::Nah => 1,
+                    Klasse::Fern => 0,
+                    _ => 2,
+                }
+            },
+            Rasse::Menschen => {
+                match haeufigkeit {
+                    Haeufigkeit::SehrHaeufig => {
+                        match  klasse{ //Bauern
+                            Klasse::Nah => 1,
+                            _ => 0
+                        }
+                    }
+                    Haeufigkeit::Selten => { //Ritter
+                        match  klasse{
+                            Klasse::Nah => 5,
+                            _ => 3
+                        }
+                    },
+                    Haeufigkeit::SehrSelten => { //Erzritter
+                        match  klasse{
+                            Klasse::Nah => 9,
+                            _ => 4
+                        }
+                    },
+                    Haeufigkeit::Episch => { //Generäle oder Könige
+                        match  klasse{
+                            Klasse::Nah => 11,
+                            _ => 8
+                        }
+                    },
+                    Haeufigkeit::Legendaer => { //großes Schwert, schwache Rüstung
+                        match  klasse{
+                            Klasse::Nah => 4,
+                            _ => 2
+                        }
+                    },
+                    _ => {
+                        match  klasse{ //Banditen
+                            Klasse::Nah => 3,
+                            _ => 2
+                        }
+                    },
+                }
+
+            },
+            Rasse::Drachen => { //Drachen haben sehr starke Haut
+                if let Haeufigkeit::Legendaer = haeufigkeit { //speziell legendäre Drachen
+                    15
+                } else{
+                    if let Klasse::Nah = klasse { //Drachen sind
+                        10
+                    } else{
+                        7
+                    }
+                }
+            },
+            Rasse::Elfen => {
+                match haeufigkeit {
+                    Haeufigkeit::LeichtSelten => {
+                        match  klasse{ //Elf-Krieger
+                            Klasse::Nah => 7,
+                            _ => 6
+                        }
+                    }
+                    Haeufigkeit::Selten => { //Elf-Meister
+                        match  klasse{
+                            Klasse::Nah => 10,
+                            _ => 9
+                        }
+                    },
+                    Haeufigkeit::SehrSelten => { //Elf-Weise
+                        match  klasse{
+                            Klasse::Nah => 11,
+                            _ => 0
+                        }
+                    },
+                    Haeufigkeit::Episch => { //Elf-König
+                        match  klasse{
+                            Klasse::Nah => 14,
+                            _ => 10
+                        }
+                    },
+                    Haeufigkeit::Legendaer => { //Elf-Geist
+                        match  klasse{
+                            Klasse::Nah => 15,
+                            _ => 14
+                        }
+                    },
+                    _ => 0, //alles andere sollte nicht vorkommen
+                }
+
+            },
+        }
+    }
+
+    /*
         Dies ist ein Konstruktor, welche für die
         hierbenötigte Aufgabe einen gewöhnlichen
         Ork-Krieger erstellt
     */
     fn gemeiner_ork(einheitsbezeichnung: String,
-        hp: i32, damage: i32,verteidigung: i32)
+        hp: i32, damage: i32)
          -> Einheit{
+             let rasse = Rasse::Orks;
+             let klasse = Klasse::Nah;
+             let haeufigkeit = Haeufigkeit::Selten; //Ja, richtige Orks sind selten
+             let verteidigung = Einheit::verteidigung_berechnen(&rasse,
+                 &klasse, &haeufigkeit); //berechne Rüstung
         Einheit {
-            einheitsbezeichnung, hp, damage, verteidigung, //übergebene Werte
-            rasse: Rasse::Orks,
-            klasse: Klasse::Nah,
+            einheitsbezeichnung, hp, damage, //übergebene Werte
+            verteidigung,
+            rasse,
+            klasse,
             held: false,
-            haeufigkeit: Haeufigkeit::Selten //Ja, richtige Orks sind selten
+            haeufigkeit,
         }
     }
 
@@ -140,15 +255,20 @@ impl Einheit {
         Menschen-Banditen erstellt
     */
     fn gemeiner_bandit(einheitsbezeichnung: String,
-        hp: i32, damage: i32,verteidigung: i32)
+        hp: i32, damage: i32)
          -> Einheit{
+             let rasse =  Rasse::Menschen;
+             let klasse = Klasse::Nah;
+             let haeufigkeit = Haeufigkeit::Haeufig; //leider sind Banditen die Pest
+             let verteidigung = Einheit::verteidigung_berechnen(&rasse,
+                 &klasse, &haeufigkeit); //berechne Rüstung
         Einheit {
             einheitsbezeichnung, hp, damage,
             verteidigung, //übergebene Werte
-            rasse: Rasse::Menschen,
-            klasse: Klasse::Nah,
+            rasse,
+            klasse,
             held: false,
-            haeufigkeit: Haeufigkeit::Haeufig //leider sind Banditen die Pest
+            haeufigkeit,
         }
     }
 
@@ -157,17 +277,22 @@ impl Einheit {
         die Erstellung eines seltenen Elfes ist
     */
     fn elf_bogenschuetze(einheitsbezeichnung: String,
-        hp: i32, damage: i32,verteidigung: i32)
+        hp: i32, damage: i32)
          -> Einheit{
+             let rasse = Rasse::Elfen;
+             let klasse = Klasse::Fern;
+             let haeufigkeit = Haeufigkeit::LeichtSelten; //Elfen waren früher nur
+                                               //Legenden,jetzt entschwinden sie
+                                               //immer mehr den Ruf der Fabelwesen
+             let verteidigung = Einheit::verteidigung_berechnen(&rasse,
+                 &klasse, &haeufigkeit); //berechne Rüstung
         Einheit {
             einheitsbezeichnung, hp, damage,
             verteidigung, //übergebene Werte
-            rasse: Rasse::Elfen,
-            klasse: Klasse::Fern,
+            rasse,
+            klasse,
             held: false,
-            haeufigkeit: Haeufigkeit::LeichtSelten, //Elfen waren früher nur
-                                              //Legenden,jetzt entschwinden sie
-                                              //immer mehr den Ruf der Fabelwesen
+            haeufigkeit,
         }
     }
 
@@ -180,10 +305,9 @@ impl Einheit {
         let ork_name = String::from("Blutschlinger-Ork");
         let ork_hp = 50;
         let ork_damage = 20;
-        let ork_verteidigung = 15;
         println!("Erzeuge Ork: {}", ork_name);
         let ork = Einheit::gemeiner_ork(ork_name,
-            ork_hp, ork_damage, ork_verteidigung);
+            ork_hp, ork_damage);
         println!("Ork mit folgenden Werten erzeugt:\n
         {:?}", ork);
         ork
@@ -194,10 +318,9 @@ impl Einheit {
         let mensch_name = String::from("Rudolf die Silberklinge");
         let mensch_hp = 40;
         let mensch_damage = 16;
-        let mensch_verteidigung = 10;
         println!("Erzeuge Mensch: {}", mensch_name);
         let mensch = Einheit::gemeiner_bandit(mensch_name,
-            mensch_hp, mensch_damage, mensch_verteidigung);
+            mensch_hp, mensch_damage);
         println!("Bandit mit folgenden Werten erzeugt:\n
         {:?}", mensch);
         mensch
@@ -208,10 +331,9 @@ impl Einheit {
         let elfen_name = String::from("Darion der Geschickte");
         let elfen_hp = 20;
         let elfen_damage = 18;
-        let elfen_veteidigung = 15;
         println!("Erzeuge Elf: {}", elfen_name);
         let elf = Einheit::elf_bogenschuetze(elfen_name,
-             elfen_hp,elfen_damage, elfen_veteidigung);
+             elfen_hp,elfen_damage);
         println!("Elf mit folgenden Werten erzeugt:\n
              {:?}", elf);
              elf
