@@ -609,12 +609,13 @@ fn main() {
 }
 
 fn test_kaempfe(){
+/*
     println!("Erstes Szenario\n");
     test_kampf_getrennt();
 
     println!("\nZweitest Szenario\n");
     test_kampf_gemeinsam();
-
+*/
     println!("\nDrittes Szenario");
     test_zwei_gegen_einen();
 }
@@ -733,8 +734,10 @@ fn kampf_zwei_gegen_einen (ork: &mut Einheit, goblin: &mut Einheit, mensch: &mut
                 },
             }
         }
-        if ork.hp >0 && (mensch.ist_effektiv(ork)|| !mensch.ist_effektiv(goblin)||
-        ork.hp > goblin.hp) {
+        if ork.hp >0 && ((!mensch.ist_effektiv(goblin) && mensch.ist_effektiv(ork))
+         || goblin.hp<=0) {
+            println!("{}: {}",goblin.einheitsbezeichnung, mensch.ist_effektiv(goblin));
+            println!("{}: {}",ork.einheitsbezeichnung, mensch.ist_effektiv(ork));
             let error = mensch.angriff(ork);
             match check_kampf(error, ork, mensch) {
                 false => println!("Beide stehen noch immer wacker"),
@@ -757,8 +760,8 @@ fn kampf_zwei_gegen_einen (ork: &mut Einheit, goblin: &mut Einheit, mensch: &mut
                         println!("Kampf vorbei");
                         break;
                     }else{
-                        println!("Fehler!!!");
-                        break;
+                        println!("Endlich ist {} tot mit {} viel HP",
+                        goblin.einheitsbezeichnung, goblin.hp);
                     }
                 },
             }
