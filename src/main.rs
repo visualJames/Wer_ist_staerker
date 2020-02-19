@@ -89,6 +89,31 @@ enum Haeufigkeit {  // ^
 }
 
 /*
+    Dies soll die Groesse einer Einheit
+    darstellen.
+    Ab Gigantisch soll Flächenschaden der Fall sein,
+    also es werden alle Einheiten des Feldes angegriffen
+*/
+#[derive(Debug)]
+enum Groesse {
+    Winzig, //Goblin
+    Klein, //Kobold
+    Normalgross, //Menschen
+    Gross, //Orks und Elfen
+    Riesig, //Trolle und Steingolems
+    Gigantisch, //Baumriesen und Drachen
+    Monstrositaet, //Antike Steinriesen, die so groß wie Berge sind
+}
+
+enum Erfahrenheit {
+    Unerfahren, //Anfänger, jung
+    Ausgebildet, //hat zumindest ein wenig Erfahrung
+    Erfahren, //viele Schlachten
+    Veteran, //eben ein Veteran
+    Meister, //beherscht seine Kunst perfekt
+}
+
+/*
 Eineheit hat folgende Attribute:
 i32: Hp,i32: Damage,i32: Verteidigung,
 Enum Rasse: Rasse,Enum Klasse: Klasse,
@@ -113,6 +138,7 @@ struct Einheit {
     klasse: Klasse, //Klasse der Einheit
     held: bool, //ist Held: true; kein Held: false
     haeufigkeit: Haeufigkeit, //wie haeufig zu finden
+    groesse: Groesse, //wie groß ist die Einheit
 }
 
 
@@ -227,20 +253,145 @@ impl Einheit {
     }
 
     /*
+        Diese Klassenfunktion soll die HP der
+        Einheit einer bestimmten Rasse und Klasse
+        anhand seiner Groöße berechnen.
+        Leitwert: Je größer, desto mehr HP
+    */
+    fn hp_berechnen(rasse: &Rasse, klasse: &Klasse,
+        groesse: &Groesse) -> i32{
+            let hp = match groesse{
+                Groesse::Winzig => 1,
+                Groesse::Klein => 3,
+                Groesse::Normalgross =>7,
+                Groesse::Gross => 10,
+                Groesse::Riesig => 20,
+                Groesse::Gigantisch => 40,
+                Groesse::Monstrositaet => 100,
+            };
+
+            match rasse {
+                Rasse::Orks =>{
+                    match klasse {
+                        Klasse::Nah => {
+                            hp*6 //10*6=60(Ork), bzw. 1*6=6(Goblin)
+                        },
+                        _ => {
+                            hp*5
+                        },
+                    }
+                },
+                Rasse::Menschen =>{
+                    match klasse {
+                        Klasse::Nah => {
+                            hp*3 //7*3=21(Bandit)
+                        },
+                        _ => {
+                            hp*2
+                        },
+                    }
+                },
+                Rasse::Drachen =>{
+                    match klasse {
+                        Klasse::Nah => {
+                            hp*5 //40*7=280(Drache)
+                        },
+                        _ => {
+                            hp*4
+                        },
+                    }
+                },
+                Rasse::Elfen =>{
+                    match klasse {
+                        Klasse::Nah => {
+                            hp*3 //10*4=40(Elfe), 20*4=80(Baumriese)
+                        },
+                        _ => {
+                            hp*2+5 //10*3=30(Elfe)
+                        },
+                    }
+                },
+            }
+        }
+
+        /*
+            Diese Klassenfunktion soll das Damage der
+            Einheit einer bestimmten Rasse und Klasse
+            anhand seiner Erfahrenheit berechnen.
+            Leitwert: Je erfahrender, desto mehr Damage
+        */
+        fn damage_berechnen(rasse: &Rasse, klasse: &Klasse,
+            erfahrenheit: &Erfahrenheit) -> i32{
+                let damage = match erfahrenheit{
+                    Erfahrenheit::Unerfahren => 1,
+                    Erfahrenheit::Ausgebildet => 2,
+                    Erfahrenheit::Erfahren => 4,
+                    Erfahrenheit::Veteran => 6,
+                    Erfahrenheit::Meister => 18,
+                };
+
+                match rasse {
+                    Rasse::Orks =>{
+                        match klasse {
+                            Klasse::Nah =>
+                                damage*5, //4*5=20
+                            Klasse::Fern =>
+                                damage*2, //4*2=8
+                            Klasse::Magier =>
+                                damage*6, //4*6=24, mächtige Schamanen
+                            Klasse::Heiler =>
+                                damage*4, //4*5=20
+                        }
+                    },
+                    Rasse::Menschen =>{
+                        match klasse {
+                            Klasse::Nah => {
+                                damage*3 //2*6=12
+                            },
+                            _ => {
+                                damage*1 //4*1=4
+                            },
+                        }
+                    },
+                    Rasse::Drachen =>{
+                        damage*4 //6*4=24
+                    },
+                    Rasse::Elfen =>{
+                        match klasse {
+                            Klasse::Nah => {
+                                damage*3 //4*3=12
+                            }
+                            Klasse::Fern => {
+                                damage*4 //4*4=16
+                            },
+                            Klasse::Magier => {
+                                damage*5 //4*5=20
+                            },
+                            Klasse::Heiler => {
+                                damage*5 //4*5=20
+                            }
+                        }
+                    },
+                }
+            }
+
+
+    /*
         Dies ist ein Konstruktor, welche für die
         hierbenötigte Aufgabe einen gewöhnlichen
         Ork-Krieger erstellt
     */
-    fn gemeiner_ork(einheitsbezeichnung: String,
-        hp: i32, damage: i32)
-         -> Einheit{
+    fn gemeiner_ork(einheitsbezeichnung: String, groesse: Groesse,
+        erfahrenheit: Erfahrenheit) -> Einheit{
              let rasse = Rasse::Orks;
              let klasse = Klasse::Nah;
              let haeufigkeit = Haeufigkeit::Selten; //Ja, richtige Orks sind selten
              let verteidigung = Einheit::verteidigung_berechnen(&rasse,
                  &klasse, &haeufigkeit); //berechne Rüstung
+             let hp = Einheit::hp_berechnen(&rasse, &klasse, &groesse);
+             let damage = Einheit::damage_berechnen(&rasse, &klasse, &erfahrenheit);
         Einheit {
-            einheitsbezeichnung, hp, damage, //übergebene Werte
+            einheitsbezeichnung, hp, damage, groesse,//übergebene Werte
             verteidigung,
             rasse,
             klasse,
@@ -254,17 +405,18 @@ impl Einheit {
         hierbenötigte Aufgabe einen gewöhnlichen
         Menschen-Banditen erstellt
     */
-    fn gemeiner_bandit(einheitsbezeichnung: String,
-        hp: i32, damage: i32)
-         -> Einheit{
+    fn gemeiner_bandit(einheitsbezeichnung: String,groesse: Groesse,
+        erfahrenheit: Erfahrenheit)-> Einheit{
              let rasse =  Rasse::Menschen;
              let klasse = Klasse::Nah;
              let haeufigkeit = Haeufigkeit::Haeufig; //leider sind Banditen die Pest
              let verteidigung = Einheit::verteidigung_berechnen(&rasse,
                  &klasse, &haeufigkeit); //berechne Rüstung
+             let hp = Einheit::hp_berechnen(&rasse, &klasse, &groesse);
+             let damage = Einheit::damage_berechnen(&rasse, &klasse, &erfahrenheit);
         Einheit {
-            einheitsbezeichnung, hp, damage,
-            verteidigung, //übergebene Werte
+            einheitsbezeichnung, hp, damage, groesse,//übergebene Werte
+            verteidigung,
             rasse,
             klasse,
             held: false,
@@ -276,9 +428,8 @@ impl Einheit {
         Dies ist ein Konstruktor, welche für
         die Erstellung eines seltenen Elfes ist
     */
-    fn elf_bogenschuetze(einheitsbezeichnung: String,
-        hp: i32, damage: i32)
-         -> Einheit{
+    fn elf_bogenschuetze(einheitsbezeichnung: String, groesse: Groesse,
+        erfahrenheit: Erfahrenheit)-> Einheit{
              let rasse = Rasse::Elfen;
              let klasse = Klasse::Fern;
              let haeufigkeit = Haeufigkeit::LeichtSelten; //Elfen waren früher nur
@@ -286,9 +437,11 @@ impl Einheit {
                                                //immer mehr den Ruf der Fabelwesen
              let verteidigung = Einheit::verteidigung_berechnen(&rasse,
                  &klasse, &haeufigkeit); //berechne Rüstung
+             let hp = Einheit::hp_berechnen(&rasse, &klasse, &groesse);
+             let damage = Einheit::damage_berechnen(&rasse, &klasse, &erfahrenheit);
         Einheit {
-            einheitsbezeichnung, hp, damage,
-            verteidigung, //übergebene Werte
+            einheitsbezeichnung, hp, damage, groesse, //übergebene Werte
+            verteidigung,
             rasse,
             klasse,
             held: false,
@@ -302,12 +455,12 @@ impl Einheit {
 //Verschiedene Einheiten
     //Orks
     fn erstelle_blutschlinger_ork() -> Einheit {
-        let ork_name = String::from("Blutschlinger-Ork");
-        let ork_hp = 50;
-        let ork_damage = 20;
-        println!("Erzeuge Ork: {}", ork_name);
-        let ork = Einheit::gemeiner_ork(ork_name,
-            ork_hp, ork_damage);
+        let name = String::from("Blutschlinger-Ork");
+        let groesse = Groesse::Gross;
+        let erfahrenheit = Erfahrenheit::Erfahren;
+        println!("Erzeuge Ork: {}", name);
+        let ork = Einheit::gemeiner_ork(name,
+             groesse, erfahrenheit);
         println!("Ork mit folgenden Werten erzeugt:\n
         {:?}", ork);
         ork
@@ -315,12 +468,12 @@ impl Einheit {
 
     //Menschen
     fn erstelle_rudolf_die_silberklinge() -> Einheit {
-        let mensch_name = String::from("Rudolf die Silberklinge");
-        let mensch_hp = 40;
-        let mensch_damage = 16;
-        println!("Erzeuge Mensch: {}", mensch_name);
-        let mensch = Einheit::gemeiner_bandit(mensch_name,
-            mensch_hp, mensch_damage);
+        let name = String::from("Rudolf die Silberklinge");
+        let groesse = Groesse::Normalgross;
+        let erfahrenheit = Erfahrenheit::Ausgebildet;
+        println!("Erzeuge Mensch: {}", name);
+        let mensch = Einheit::gemeiner_bandit(name,
+             groesse, erfahrenheit);
         println!("Bandit mit folgenden Werten erzeugt:\n
         {:?}", mensch);
         mensch
@@ -328,12 +481,12 @@ impl Einheit {
 
     //Elfen
     fn erstelle_darion_der_geschickte() -> Einheit {
-        let elfen_name = String::from("Darion der Geschickte");
-        let elfen_hp = 20;
-        let elfen_damage = 18;
-        println!("Erzeuge Elf: {}", elfen_name);
-        let elf = Einheit::elf_bogenschuetze(elfen_name,
-             elfen_hp,elfen_damage);
+        let name = String::from("Darion der Geschickte");
+        let groesse = Groesse::Gross;
+        let erfahrenheit = Erfahrenheit::Erfahren;
+        println!("Erzeuge Elf: {}", name);
+        let elf = Einheit::elf_bogenschuetze(name,
+             groesse, erfahrenheit);
         println!("Elf mit folgenden Werten erzeugt:\n
              {:?}", elf);
              elf
@@ -461,6 +614,9 @@ fn test_kaempfe(){
 
     println!("\nZweitest Szenario\n");
     test_kampf_gemeinsam();
+
+    println!("\nDrittes Szenario");
+    test_zwei_gegen_einen();
 }
 
 fn test_kampf_getrennt(){
@@ -474,14 +630,24 @@ fn test_kampf_gemeinsam(){
     let mut mensch = erstelle_rudolf_die_silberklinge();
 
     println!("\n----Starte Kampf----\n");
-    kampf(&mut ork,&mut mensch);
+    kampf(&mut mensch,&mut ork);
     println!("\n-----Ende Kampf-----\n");
 
     println!("Oh, Nein!!! Ein Elf taucht auf...");
     let mut elf = erstelle_darion_der_geschickte();
 
     println!("\n----Starte Kampf----\n");
-    kampf(&mut ork,&mut elf);
+    kampf(&mut elf,&mut ork);
+    println!("\n-----Ende Kampf-----\n");
+}
+
+fn test_zwei_gegen_einen(){
+    let mut ork = erstelle_blutschlinger_ork();
+    let mut mensch = erstelle_rudolf_die_silberklinge();
+    let mut elf = erstelle_darion_der_geschickte();
+
+    println!("\n----Starte Kampf----\n");
+    kampf_zwei_gegen_einen(&mut mensch,&mut elf, &mut ork);
     println!("\n-----Ende Kampf-----\n");
 }
 
@@ -490,7 +656,7 @@ fn test_kampf_mensch_vs_ork() {
     let mut mensch = erstelle_rudolf_die_silberklinge();
 
     println!("\n----Starte Kampf----\n");
-    kampf(&mut ork,&mut mensch);
+    kampf(&mut mensch,&mut ork);
     println!("\n-----Ende Kampf-----\n");
 }
 
@@ -499,7 +665,7 @@ fn test_kampf_elf_vs_ork() {
     let mut elf = erstelle_darion_der_geschickte();
 
     println!("\n----Starte Kampf----\n");
-    kampf(&mut ork,&mut elf);
+    kampf(&mut elf,&mut ork);
     println!("\n-----Ende Kampf-----\n");
 }
 
@@ -539,6 +705,65 @@ fn kampf (ork: &mut Einheit, mensch: &mut Einheit){
                 break;
             },
         }
+    }
+    println!("Der Sieger stolziert anmutig vom Schlachfeld");
+}
+
+//Kampf bis zum Tode
+fn kampf_zwei_gegen_einen (ork: &mut Einheit, goblin: &mut Einheit, mensch: &mut Einheit){
+    //kämpfe solange bis einer stirbt
+    loop {
+        if ork.hp >0{
+            let error = ork.angriff(mensch);
+            match check_kampf(error, ork, mensch) {
+                false => println!("Beide stehen noch immer wacker"),
+                true => {
+                    println!("Kampf vorbei");
+                    break;
+                },
+            }
+        }
+        if goblin.hp >0 {
+            let error = goblin.angriff(mensch);
+            match check_kampf(error, goblin, mensch) {
+                false => println!("Beide stehen noch immer wacker"),
+                true => {
+                    println!("Kampf vorbei");
+                    break;
+                },
+            }
+        }
+        if ork.hp >0 && (mensch.ist_effektiv(ork)|| !mensch.ist_effektiv(goblin)||
+        ork.hp > goblin.hp) {
+            let error = mensch.angriff(ork);
+            match check_kampf(error, ork, mensch) {
+                false => println!("Beide stehen noch immer wacker"),
+                true => {
+                    if error||mensch.hp<=0||goblin.hp <=0 {
+                        println!("Kampf vorbei");
+                        break;
+                    }else{
+                        println!("Endlich ist {} tot mit {} viel HP",
+                        ork.einheitsbezeichnung, ork.hp);
+                    }
+                },
+            }
+        } else {
+            let error = mensch.angriff(goblin);
+            match check_kampf(error, goblin, mensch) {
+                false => println!("Beide stehen noch immer wacker"),
+                true => {
+                    if error||mensch.hp<=0||ork.hp <=0 {
+                        println!("Kampf vorbei");
+                        break;
+                    }else{
+                        println!("Fehler!!!");
+                        break;
+                    }
+                },
+            }
+        }
+
     }
     println!("Der Sieger stolziert anmutig vom Schlachfeld");
 }
