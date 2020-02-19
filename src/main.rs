@@ -770,3 +770,7 @@ fn kampf_zwei_gegen_einen (ork: &mut Einheit, goblin: &mut Einheit, mensch: &mut
     }
     println!("Der Sieger stolziert anmutig vom Schlachfeld");
 }
+
+//todo! Die Klasse Einheit mit ihren Methoden und die Tests mit print trennen
+//todo! Richtige Tests schreiben, ob die Logik so funktioniert wie gewollt
+//todo! Mehr Einheiten für Ork erzeugen. Ork-Einheiten sollen schon ein wenig erstellt werden
