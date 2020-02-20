@@ -19,6 +19,8 @@ impl Einheit {
         }
     }
 
+//___________________________ alles hierdrüber privat
+
     //bestimmt ob die Einheit gegen die Feindeinheit effektiv ist
     pub fn ist_effektiv(&mut self, gegner: &Einheit) -> bool {
         let ist = match self.rasse {

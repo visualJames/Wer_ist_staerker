@@ -224,4 +224,4 @@ fn kampf_zwei_gegen_einen (ork: &mut Einheit, goblin: &mut Einheit, mensch: &mut
 }
 
 //todo! Richtige Tests schreiben, ob die Logik so funktioniert wie gewollt
-//todo! Mehr Einheiten für Ork erzeugen. Ork-Einheiten sollen schon ein wenig erstellt werden
+//todo! Mehr Einheiten für Ork erzeugen. Ork-Einheiten sollen noch ein wenig erstellt werden

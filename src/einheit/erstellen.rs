@@ -312,9 +312,9 @@ impl Einheit {
 
 }
 
-//___________________________
-//Verschiedene Einheiten
-    //Orks
+//___________________________ alles hierdrüber privat
+//public Konstukturen für Verschiedene Einheiten einer bestimmten Rasse
+    //Konstruktoren für die Rasse Orks
     pub fn erstelle_blutschlinger_ork() -> Einheit {
         let name = String::from("Blutschlinger-Ork");
         let groesse = Groesse::Gross;
@@ -327,7 +327,7 @@ impl Einheit {
         ork
     }
 
-    //Menschen
+    //Konstruktoren für die Rasse Menschen
     pub fn erstelle_rudolf_die_silberklinge() -> Einheit {
         let name = String::from("Rudolf die Silberklinge");
         let groesse = Groesse::Normalgross;
@@ -340,7 +340,7 @@ impl Einheit {
         mensch
     }
 
-    //Elfen
+    //Konstruktoren für die Rasse Elfen
     pub fn erstelle_darion_der_geschickte() -> Einheit {
         let name = String::from("Darion der Geschickte");
         let groesse = Groesse::Gross;
