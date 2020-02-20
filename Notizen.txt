@@ -1,0 +1,3 @@
+#Um zu berechnen wie viel Zeilen Code ich bereits 
+#geschrieben habe, führe den folgenden Befehl aus:
+find -name "*.rs" | xargs wc -l

@@ -1,5 +1,5 @@
 [package]
-name = "Wer_ist_staerker"
+name = "wer_ist_staerker"
 version = "0.1.0"
 authors = ["André <andre.hodapp@t-online.de>"]
 edition = "2018"

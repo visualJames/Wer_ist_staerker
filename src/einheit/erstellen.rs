@@ -242,11 +242,9 @@ impl Einheit {
         hierbenötigte Aufgabe einen gewöhnlichen
         Ork-Krieger erstellt
     */
-    fn gemeiner_ork(einheitsbezeichnung: String, groesse: Groesse,
-        erfahrenheit: Erfahrenheit) -> Einheit{
+    fn erstelle_ork(einheitsbezeichnung: String, groesse: Groesse,
+        erfahrenheit: Erfahrenheit, haeufigkeit: Haeufigkeit, klasse: Klasse) -> Einheit{
              let rasse = Rasse::Orks;
-             let klasse = Klasse::Nah;
-             let haeufigkeit = Haeufigkeit::Selten; //Ja, richtige Orks sind selten
              let verteidigung = Einheit::verteidigung_berechnen(&rasse,
                  &klasse, &haeufigkeit); //berechne Rüstung
              let hp = Einheit::hp_berechnen(&rasse, &klasse, &groesse);
@@ -315,17 +313,161 @@ impl Einheit {
 //___________________________ alles hierdrüber privat
 //public Konstukturen für Verschiedene Einheiten einer bestimmten Rasse
     //Konstruktoren für die Rasse Orks
-    pub fn erstelle_blutschlinger_ork() -> Einheit {
-        let name = String::from("Blutschlinger-Ork");
-        let groesse = Groesse::Gross;
-        let erfahrenheit = Erfahrenheit::Erfahren;
-        println!("Erzeuge Ork: {}", name);
-        let ork = Einheit::gemeiner_ork(name,
-             groesse, erfahrenheit);
-        println!("Ork mit folgenden Werten erzeugt:\n
-        {:?}", ork);
-        ork
-    }
+        //sehr stark
+            //Trolle (riesige furchteinflößende Geschöpfe, Gruppengänger,
+            //früher Verbündete der Dämmerwald-Orks)
+            pub fn erstelle_troll() -> Einheit {
+                let name = String::from("Troll");
+                let groesse = Groesse::Riesig;
+                let erfahrenheit = Erfahrenheit::Erfahren;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::Episch, Klasse::Nah);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
+            //Oger (riesige furchteinflößende Geschöpfe, Einzelgänger)
+            pub fn erstelle_oger() -> Einheit {
+                let name = String::from("Oger");
+                let groesse = Groesse::Riesig;
+                let erfahrenheit = Erfahrenheit::Unerfahren;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::SehrSelten, Klasse::Nah);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
+        //mittelstark
+            //echte Orks (Blutschlinger:Groß, Dämmerwald:Stark)
+                //Blutschlinger (Orks, die nur draufhauen können; Einzelgänger)
+                pub fn erstelle_blutschlinger_ork() -> Einheit {
+                    let name = String::from("Blutschlinger-Ork");
+                    let groesse = Groesse::Gross;
+                    let erfahrenheit = Erfahrenheit::Erfahren;
+                    println!("Erzeuge Ork: {}", name);
+                    let ork = Einheit::erstelle_ork(name,
+                         groesse, erfahrenheit, Haeufigkeit::Selten, Klasse::Nah);
+                    println!("Ork mit folgenden Werten erzeugt:\n
+                    {:?}", ork);
+                    ork
+                }
+
+                pub fn erstelle_blutschlinger_ork_Bluttrinker() -> Einheit {
+                    let name = String::from("Bluttrinker der Blutschlinger-Ork");
+                    let groesse = Groesse::Riesig;
+                    let erfahrenheit = Erfahrenheit::Meister;
+                    println!("Erzeuge Ork: {}", name);
+                    let ork = Einheit::erstelle_ork(name,
+                         groesse, erfahrenheit, Haeufigkeit::Legendaer, Klasse::Nah);
+                    println!("Ork mit folgenden Werten erzeugt:\n
+                    {:?}", ork);
+                    ork
+                }
+
+                //Dämmerwald-Orks (Klein, aber als Stamm anzutreffen; organisiert)
+                pub fn erstelle_daemmerwald_ork_Krieger() -> Einheit {
+                    let name = String::from("Dämmerwald-Orkkrieger");
+                    let groesse = Groesse::Normalgross;
+                    let erfahrenheit = Erfahrenheit::Veteran;
+                    println!("Erzeuge Ork: {}", name);
+                    let ork = Einheit::erstelle_ork(name,
+                         groesse, erfahrenheit, Haeufigkeit::SehrSelten, Klasse::Nah);
+                    println!("Ork mit folgenden Werten erzeugt:\n
+                    {:?}", ork);
+                    ork
+                }
+
+                pub fn erstelle_daemmerwald_ork_Schamane() -> Einheit {
+                    let name = String::from("Dämmerwald-Orkschamane");
+                    let groesse = Groesse::Normalgross;
+                    let erfahrenheit = Erfahrenheit::Erfahren;
+                    println!("Erzeuge Ork: {}", name);
+                    let ork = Einheit::erstelle_ork(name,
+                         groesse, erfahrenheit, Haeufigkeit::Episch, Klasse::Magier);
+                    println!("Ork mit folgenden Werten erzeugt:\n
+                    {:?}", ork);
+                    ork
+                }
+
+                pub fn erstelle_daemmerwald_ork_schaedelspalter() -> Einheit {
+                    let name = String::from("Schädelspalter der Dämmerwald-Ork");
+                    let groesse = Groesse::Gross;
+                    let erfahrenheit = Erfahrenheit::Meister;
+                    println!("Erzeuge Ork: {}", name);
+                    let ork = Einheit::erstelle_ork(name,
+                         groesse, erfahrenheit, Haeufigkeit::Legendaer, Klasse::Nah);
+                    println!("Ork mit folgenden Werten erzeugt:\n
+                    {:?}", ork);
+                    ork
+                }
+
+        //schwach
+            //Kobold (leicht selten anzutrefen; Einzelgänger)
+            pub fn erstelle_kobold_messerwerfer() -> Einheit {
+                let name = String::from("Goblin Bombenwerfer");
+                let groesse = Groesse::Klein;
+                let erfahrenheit = Erfahrenheit::Ausgebildet;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::LeichtSelten, Klasse::Fern);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
+            //Goblin (wie die Pest; organisiert; Untertanen der Dämmerwald-Orks)
+            pub fn erstelle_goblin_wassertraeger() -> Einheit {
+                let name = String::from("Goblin Wasserträger");
+                let groesse = Groesse::Winzig;
+                let erfahrenheit = Erfahrenheit::Unerfahren;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::SehrHaeufig, Klasse::Nah);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
+            pub fn erstelle_goblin_Arbeiter() -> Einheit {
+                let name = String::from("Goblin Arbeiter");
+                let groesse = Groesse::Winzig;
+                let erfahrenheit = Erfahrenheit::Ausgebildet;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::SehrHaeufig, Klasse::Nah);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
+            pub fn erstelle_goblin_bombenwerfer() -> Einheit {
+                let name = String::from("Goblin Bombenwerfer");
+                let groesse = Groesse::Winzig;
+                let erfahrenheit = Erfahrenheit::Erfahren;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::Haeufig, Klasse::Fern);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
+            pub fn erstelle_goblin_truppenanfuehrer() -> Einheit {
+                let name = String::from("Goblin Truppennführer");
+                let groesse = Groesse::Klein;
+                let erfahrenheit = Erfahrenheit::Veteran;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::LeichtSelten, Klasse::Nah);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
 
     //Konstruktoren für die Rasse Menschen
     pub fn erstelle_rudolf_die_silberklinge() -> Einheit {
