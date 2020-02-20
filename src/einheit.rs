@@ -1,3 +1,5 @@
+//Copyright: 2020 André Hodapp
+
 /*
     Hierdrin ist die Einheit mit ihren Aktionen und Konstruktoren zu finden.
     Eine Einheit ist ein Lebewesen einer bestimmten Rasse/Volkes, die

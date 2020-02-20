@@ -1,3 +1,5 @@
+//Copyright: 2020 André Hodapp
+
 /*
     Hierdrin sollen alle Konstruktoren angeboten werden
 */

@@ -1,3 +1,5 @@
+//Copyright: 2020 André Hodapp
+
 /*
     Die wichtigsten Aktionen sollen öffentlich sein.
     Unteraktionen, die Teil einer übergeordnenten Aktion sind,
