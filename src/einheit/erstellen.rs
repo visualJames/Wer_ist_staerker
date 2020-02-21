@@ -343,6 +343,18 @@ impl Einheit {
                 ork
             }
 
+            pub fn erstelle_oger_menschenfresser() -> Einheit {
+                let name = String::from("Olaf der Menschenfresser");
+                let groesse = Groesse::Riesig;
+                let erfahrenheit = Erfahrenheit::Meister;
+                println!("Erzeuge Ork: {}", name);
+                let ork = Einheit::erstelle_ork(name,
+                     groesse, erfahrenheit, Haeufigkeit::Episch, Klasse::Nah);
+                println!("Ork mit folgenden Werten erzeugt:\n
+                {:?}", ork);
+                ork
+            }
+
         //mittelstark
             //echte Orks (Blutschlinger:Groß, Dämmerwald:Stark)
                 //Blutschlinger (Orks, die nur draufhauen können; Einzelgänger)
@@ -434,7 +446,7 @@ impl Einheit {
                 ork
             }
 
-            pub fn erstelle_goblin_Arbeiter() -> Einheit {
+            pub fn erstelle_goblin_arbeiter() -> Einheit {
                 let name = String::from("Goblin Arbeiter");
                 let groesse = Groesse::Winzig;
                 let erfahrenheit = Erfahrenheit::Ausgebildet;

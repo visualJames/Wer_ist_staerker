@@ -17,7 +17,7 @@ Es gibt 4 Rassen, wobei Orks und Drachen
 als böse und brutal gelten, wohingegen
 Menschen und Elfen gut und naturnah
 */
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Rasse {
     Orks, //-effektiv_gegen-> Menschen
     Menschen, //-effektiv_gegen-> Drachen
@@ -46,7 +46,7 @@ Spielfeld-Aufbau:
         [Fern, Fern]
       [Magier/Heiler]
 */
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Klasse {
     Nah, //Krieger kämpfen in vorderster Reihe
     Fern, //Bogenschützen direkt dahinter
@@ -60,7 +60,7 @@ enum Klasse {
     Ab Gigantisch soll Flächenschaden der Fall sein,
     also es werden alle Einheiten des Feldes angegriffen
 */
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Groesse {
     Winzig, //Goblin
     Klein, //Kobold
@@ -95,7 +95,7 @@ Haeufigkeit ist ein Richtwert, wie selten
 diese Einheit als Karte zu finden ist
 
 */
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Einheit {
     einheitsbezeichnung: String, //Die Bezeichnung der Einheit
     hp: i32, //logisch soll nur 1-255 HP möglich sein

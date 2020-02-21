@@ -38,13 +38,13 @@ Bool: Held, Enum Haeufigkeit: Haeufigkeit
 mod einheit; //Wir wollen mit Einheiten arbeiten
 
 use einheit::Einheit; //struct Einheit direkt benutzbar
-
+use crate::einheit::monsterdeck::OrkDeck;
 
 
 /*
     Die Häufigkeit einer Karte
 */
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Haeufigkeit {  // ^
     Legendaer,      // |
     Episch,         // |
@@ -57,7 +57,23 @@ enum Haeufigkeit {  // ^
 
 
 fn main() {
-    test_kaempfe();
+    waehleKartenDeckAus();
+    //test_kaempfe();
+}
+
+fn waehleKartenDeckAus(){
+    //erstelle ein Orkdeck, welches aber unterschiedliche Größe sein kann
+    let orkdeck = crate::einheit::monsterdeck::erstelle_deck::erstelle_ork_deck();
+    //nimm dieses Orkdeck und packe es in einem Vector, sodass die bel.
+    //Größe egal ist und man gut damit arbeiten kann
+    let deck = match orkdeck {
+        OrkDeck::KoboldeGoblins(deck) => deck.to_vec(),
+        OrkDeck::Daemmerwaldorks(deck) => deck.to_vec(),
+        OrkDeck::TrolleOger(deck) => deck.to_vec(),
+    };
+    for i in &deck {
+        println!("Einheit: {:?}", i);
+    }
 }
 
 fn test_kaempfe(){
