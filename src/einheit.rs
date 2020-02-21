@@ -8,7 +8,7 @@
 
 pub mod aktionen; //Aktionen, also angreifen, heilen etc.
 pub mod erstellen; //Konstruktoren, die ich anbiete (z.B. erstelle_blutschlinger_ork())
-
+pub mod monsterdeck; //Deck bestehend aus Einheiten
 
 use crate::Haeufigkeit; //für struct Einheit
 
