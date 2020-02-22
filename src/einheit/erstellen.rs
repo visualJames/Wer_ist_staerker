@@ -422,7 +422,7 @@ impl Einheit {
         //schwach
             //Kobold (leicht selten anzutrefen; Einzelgänger)
             pub fn erstelle_kobold_messerwerfer() -> Einheit {
-                let name = String::from("Goblin Bombenwerfer");
+                let name = String::from("Kobold Messerwerfer");
                 let groesse = Groesse::Klein;
                 let erfahrenheit = Erfahrenheit::Ausgebildet;
                 println!("Erzeuge Ork: {}", name);

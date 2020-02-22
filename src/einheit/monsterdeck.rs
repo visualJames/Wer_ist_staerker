@@ -64,22 +64,27 @@ impl OrkDeck {
 fn gib_kobolde_goblins_einheit() -> Einheit {
     //bestimme ob Kobold oder Goblin
     let kategorie = rand::thread_rng().gen_range(0, 2);
+    //println!("--kategorie: {}", kategorie);
     let einheit :Einheit =
     match kategorie {
         0 => {
             let wen = rand::thread_rng().gen_range(0,30);
+            //println!("--wen {}", wen);
             match wen {
                 0 => erstellen::erstelle_blutschlinger_ork_Bluttrinker(), //1/60
                 1 => erstellen::erstelle_blutschlinger_ork(), //3/60
                 2 => erstellen::erstelle_blutschlinger_ork(),
                 3 => erstellen::erstelle_blutschlinger_ork(),
-                _ => //Kobold (zwar leicht selten, desw. hat nur dieses Deck sie)
-                    erstellen::erstelle_kobold_messerwerfer(), //26/60
+                _ => { //Kobold (zwar leicht selten, desw. hat nur dieses Deck sie)
+                    //println!("Kobold!!!!");
+                    erstellen::erstelle_kobold_messerwerfer() //26/60
+                }
             }
         },
         _ => { //Goblin (kommt auch in einem anderen Deck vor, da sie häufig sind)
             //bestimme welchen Goblin genau
             let welche_seltenheit = rand::thread_rng().gen_range(0, 10);
+            //println!("--welche_seltenheit {}", welche_seltenheit);
             if welche_seltenheit == 0 { //1/20
                 erstellen::erstelle_goblin_truppenanfuehrer() //leicht selten
             } else if welche_seltenheit < 3 { //2/20
