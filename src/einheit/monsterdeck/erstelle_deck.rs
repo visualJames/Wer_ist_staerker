@@ -36,16 +36,19 @@ use crate::einheit::{Einheit};
         }
 
         fn erstelle_kobold_deck() -> OrkDeck {
-            let mut deck : [Einheit;14] = arr![gib_kobolde_goblins_einheit(); 14];
+            let deck : [Einheit;14] = arr![gib_kobolde_goblins_einheit(); 14];
+            let deck : Vec<Einheit> = deck.to_vec();
             OrkDeck::KoboldeGoblins(deck) //hier ist das passende Deck
         }
 
         fn erstelle_orkdaemmerwald_deck() -> OrkDeck {
-            let mut deck : [Einheit;13] = arr![gib_daemerwald_orks(); 13];
+            let deck : [Einheit;13] = arr![gib_daemerwald_orks(); 13];
+            let deck : Vec<Einheit> = deck.to_vec();
             OrkDeck::Daemmerwaldorks(deck) //hier ist das passende Deck
         }
 
         fn erstelle_oger_deck() -> OrkDeck {
-            let mut deck : [Einheit;12] = arr![gib_trolle_oger_goblins(); 12];
+            let deck : [Einheit;12] = arr![gib_trolle_oger_goblins(); 12];
+            let deck : Vec<Einheit> = deck.to_vec();
             OrkDeck::TrolleOger(deck) //hier ist das passende Deck
         }

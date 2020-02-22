@@ -26,9 +26,9 @@ use std::iter::{Iterator, Enumerate}; //um zu iterieren über Vektoren
 
 //Die verschiedenen Ork-Decks
 pub enum OrkDeck {
-    KoboldeGoblins([Einheit; 14]),     // ^
-    Daemmerwaldorks([Einheit; 13]),    // | Größe der Decks, also Anzahl an Karten
-    TrolleOger([Einheit; 12]),         // |
+    KoboldeGoblins(Vec<Einheit>),     // ^
+    Daemmerwaldorks(Vec<Einheit>),    // | Größe der Decks, also Anzahl an Karten
+    TrolleOger(Vec<Einheit>),         // |
 }
 
 impl OrkDeck {
@@ -37,31 +37,25 @@ impl OrkDeck {
         //nimm dieses Orkdeck und packe es in einem Vector, sodass die bel.
         //Größe egal ist und man gut damit arbeiten kann
         let deck = match self {
-            OrkDeck::KoboldeGoblins(deck) => deck.to_vec(),
-            OrkDeck::Daemmerwaldorks(deck) => deck.to_vec(),
-            OrkDeck::TrolleOger(deck) => deck.to_vec(),
+            OrkDeck::KoboldeGoblins(deck) => deck,
+            OrkDeck::Daemmerwaldorks(deck) => deck,
+            OrkDeck::TrolleOger(deck) => deck,
         };
         for (i,vec) in deck.iter().enumerate() {
             println!("{}.te Einheit: {:?}", i, vec);
         }
     }
 
-    //Soll erstes Element des Arrays popen, also entfernen und zurückgegeben
-    pub fn pop(&self) ->Einheit{
+    //Soll das oberste Element des Vektors im Deck poppen
+    pub fn pop(&mut self) -> Einheit{
         //nimm dieses Orkdeck und packe es in einem Vector, sodass die bel.
         //Größe egal ist und man gut damit arbeiten kann
         let mut deck = match self {
-            OrkDeck::KoboldeGoblins(deck) => deck.to_vec(),
-            OrkDeck::Daemmerwaldorks(deck) => deck.to_vec(),
-            OrkDeck::TrolleOger(deck) => deck.to_vec(),
+            OrkDeck::KoboldeGoblins(deck) => deck,
+            OrkDeck::Daemmerwaldorks(deck) => deck,
+            OrkDeck::TrolleOger(deck) => deck,
         };
-        //ziehe die oberste Karte und verändere damit passend den Vektor
-        let einheit = deck.pop().expect("Fehler Deck ist leer!");
-        //Jetzt muss noch unser Kartendeck passend verändert werden,
-        //indem unser Vektor wieder ein Array wird und unser Orkdeck anpasst
-        //aber dies ist nicht möglich, da unser Orkdeck Arrays mit genau der Länge 14
-        //etc. erwarten
-        einheit
+        deck.pop().expect("Deck ist leer")
     }
 }
 

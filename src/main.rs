@@ -63,7 +63,7 @@ fn main() {
 
 fn waehle_karten_deck_aus(){
     //erstelle ein Orkdeck, welches aber unterschiedliche Größe sein kann
-    let orkdeck = crate::einheit::monsterdeck::erstelle_deck::erstelle_ork_deck();
+    let mut orkdeck = crate::einheit::monsterdeck::erstelle_deck::erstelle_ork_deck();
     println!("\nFolgendes Deck wurde erzeugt:\n");
     orkdeck.gib_ganzes_deck_aus();
     println!("\nZiehe oberste Karte:\n");
