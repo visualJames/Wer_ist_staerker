@@ -57,9 +57,27 @@ enum Haeufigkeit {  // ^
 
 
 fn main() {
-    waehle_karten_deck_aus();
+    ziehe_karten_deck_leer();
+    //waehle_karten_deck_aus();
     //test_kaempfe();
 }
+
+fn ziehe_karten_deck_leer(){
+    //erstelle ein Orkdeck, welches aber unterschiedliche Größe sein kann
+    let mut orkdeck = crate::einheit::monsterdeck::erstelle_deck::erstelle_ork_deck();
+    println!("\nFolgendes Deck wurde erzeugt:\n");
+    orkdeck.gib_ganzes_deck_aus();
+    let mut i = 1;
+    loop {  //bewusst soll es crashen
+        println!("\nZiehe {}.te Karte:\n", i);
+        let mut karte = orkdeck.pop();
+        println!("Es wurde die Karte {:?} gezogen", karte);
+        i += 1;
+    }
+    println!("\nDas Deck sieht jetzt so aus:\n");
+    orkdeck.gib_ganzes_deck_aus();
+}
+
 
 fn waehle_karten_deck_aus(){
     //erstelle ein Orkdeck, welches aber unterschiedliche Größe sein kann
@@ -240,4 +258,3 @@ fn kampf_zwei_gegen_einen (ork: &mut Einheit, goblin: &mut Einheit, mensch: &mut
 }
 
 //todo! Richtige Tests schreiben, ob die Logik so funktioniert wie gewollt
-//todo! Mehr Einheiten für Ork erzeugen. Ork-Einheiten sollen noch ein wenig erstellt werden

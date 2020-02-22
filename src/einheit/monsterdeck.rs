@@ -55,6 +55,7 @@ impl OrkDeck {
             OrkDeck::Daemmerwaldorks(deck) => deck,
             OrkDeck::TrolleOger(deck) => deck,
         };
+        //todo! Es soll nicht mehr gepanickt werden, wenn Deck leer ist
         deck.pop().expect("Deck ist leer")
     }
 }
