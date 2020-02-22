@@ -22,6 +22,7 @@ use crate::einheit::erstellen; //Um Einheiten zu erstellen
 
 pub mod erstelle_deck;
 
+use std::iter::{Iterator, Enumerate}; //um zu iterieren über Vektoren
 
 //Die verschiedenen Ork-Decks
 pub enum OrkDeck {
@@ -29,6 +30,41 @@ pub enum OrkDeck {
     Daemmerwaldorks([Einheit; 13]),    // | Größe der Decks, also Anzahl an Karten
     TrolleOger([Einheit; 12]),         // |
 }
+
+impl OrkDeck {
+    //Soll das ganze Deck ausgeben
+    pub fn gib_ganzes_deck_aus(&self){
+        //nimm dieses Orkdeck und packe es in einem Vector, sodass die bel.
+        //Größe egal ist und man gut damit arbeiten kann
+        let deck = match self {
+            OrkDeck::KoboldeGoblins(deck) => deck.to_vec(),
+            OrkDeck::Daemmerwaldorks(deck) => deck.to_vec(),
+            OrkDeck::TrolleOger(deck) => deck.to_vec(),
+        };
+        for (i,vec) in deck.iter().enumerate() {
+            println!("{}.te Einheit: {:?}", i, vec);
+        }
+    }
+
+    //Soll erstes Element des Arrays popen, also entfernen und zurückgegeben
+    pub fn pop(&self) ->Einheit{
+        //nimm dieses Orkdeck und packe es in einem Vector, sodass die bel.
+        //Größe egal ist und man gut damit arbeiten kann
+        let mut deck = match self {
+            OrkDeck::KoboldeGoblins(deck) => deck.to_vec(),
+            OrkDeck::Daemmerwaldorks(deck) => deck.to_vec(),
+            OrkDeck::TrolleOger(deck) => deck.to_vec(),
+        };
+        //ziehe die oberste Karte und verändere damit passend den Vektor
+        let einheit = deck.pop().expect("Fehler Deck ist leer!");
+        //Jetzt muss noch unser Kartendeck passend verändert werden,
+        //indem unser Vektor wieder ein Array wird und unser Orkdeck anpasst
+        //aber dies ist nicht möglich, da unser Orkdeck Arrays mit genau der Länge 14
+        //etc. erwarten
+        einheit
+    }
+}
+
 
 //gibt eine Einheit der Kobolde oder Goblins vom Orkstamm zurück
 fn gib_kobolde_goblins_einheit() -> Einheit {

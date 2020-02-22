@@ -57,23 +57,23 @@ enum Haeufigkeit {  // ^
 
 
 fn main() {
-    waehleKartenDeckAus();
+    waehle_karten_deck_aus();
     //test_kaempfe();
 }
 
-fn waehleKartenDeckAus(){
+fn waehle_karten_deck_aus(){
     //erstelle ein Orkdeck, welches aber unterschiedliche Größe sein kann
     let orkdeck = crate::einheit::monsterdeck::erstelle_deck::erstelle_ork_deck();
-    //nimm dieses Orkdeck und packe es in einem Vector, sodass die bel.
-    //Größe egal ist und man gut damit arbeiten kann
-    let deck = match orkdeck {
-        OrkDeck::KoboldeGoblins(deck) => deck.to_vec(),
-        OrkDeck::Daemmerwaldorks(deck) => deck.to_vec(),
-        OrkDeck::TrolleOger(deck) => deck.to_vec(),
-    };
-    for i in &deck {
-        println!("Einheit: {:?}", i);
-    }
+    println!("\nFolgendes Deck wurde erzeugt:\n");
+    orkdeck.gib_ganzes_deck_aus();
+    println!("\nZiehe oberste Karte:\n");
+    let mut karte = orkdeck.pop();
+    println!("Es wurde die Karte {:?} gezogen", karte);
+    println!("\nZiehe oberste Karte:\n");
+    karte = orkdeck.pop();
+    println!("Es wurde die Karte {:?} gezogen", karte);
+    println!("\nDas Deck sieht jetzt so aus:\n");
+    orkdeck.gib_ganzes_deck_aus();
 }
 
 fn test_kaempfe(){
